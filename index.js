@@ -141,8 +141,7 @@ function database(type, val) {
 
             resource: {
                 values: [
-                    ['Mthobisi', 'Ngubane', 'mtho@gmail.com', '06777'],
-                    ['Mthobisi', 'Ngubane', 'mtho@gmail.com', '06777']
+                    [val.name, val.surname, val.email, val.company_name]
                 ]
             },
 
@@ -153,9 +152,9 @@ function database(type, val) {
     }
 
 
-    if(true){
+    if(type === 'get'){
         authorize().then(listMajors).catch(console.error);
-    }else{
+    }else if(type === 'update'){
         authorize().then(updateData).catch(console.error);
     }
     
@@ -163,12 +162,20 @@ function database(type, val) {
 
 
 app.get('/', (req, res) => {
-
     database('get', 'val')
-
     res.send('<h1>yesssss</h1>')
 })
+app.get('/update/:name/:surname/:email/:company_name', (req,res)=>{
+        let name = req.params.name;
+        let surname = req.params.surname;
+        let email = req.params.email;
+        let company_name = req.params.company_name;
 
+        
+        
+
+        res.send(`<div><p>${name} ${surname} ${email} ${company_name}</p></div>`)
+});
 
 app.listen(port, () => {
     console.log('server started on ' + port)
