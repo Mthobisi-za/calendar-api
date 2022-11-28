@@ -10,12 +10,7 @@ const { authenticate } = require('@google-cloud/local-auth');
 const { google } = require('googleapis');
 
 
-app.get('/', (req, res) => {
 
-
-
-    res.send('<h1>yesssss</h1>')
-})
 
 function database(type, val) {
     // If modifying these scopes, delete token.json.
@@ -108,7 +103,7 @@ function database(type, val) {
             range: 'testing', // TODO: Update placeholder value.
 
             // How the input data should be interpreted.
-            valueInputOption: 'USER_ENTERED', // TODO: Update placeholder value.
+            valueInputOption: 'RAW', // TODO: Update placeholder value.
 
             // How the input data should be inserted.
             insertDataOption: 'INSERT_ROWS', // TODO: Update placeholder value.
@@ -126,8 +121,54 @@ function database(type, val) {
         //console.log(JSON.stringify(newRes, null, 2));
     }
 
-    authorize().then(listMajors).catch(console.error);
+    //setnew data
+    async function updateData(auth) {
+        console.log('update');
+        const sheets = google.sheets({ version: 'v4', auth });
+        const request = {
+            // The ID of the spreadsheet to update.
+            spreadsheetId: '1Pr94ZBWUNYGfe5Wr0k1j_EXcUCAdSE7iJkff7vJEORA', // TODO: Update placeholder value.
+
+            // The A1 notation of a range to search for a logical table of data.
+            // Values are appended after the last row of the table.
+            range: 'testing', // TODO: Update placeholder value.
+
+            // How the input data should be interpreted.
+            valueInputOption: 'RAW', // TODO: Update placeholder value.
+
+            // How the input data should be inserted.
+            insertDataOption: 'INSERT_ROWS', // TODO: Update placeholder value.
+
+            resource: {
+                values: [
+                    ['Mthobisi', 'Ngubane', 'mtho@gmail.com', '06777'],
+                    ['Mthobisi', 'Ngubane', 'mtho@gmail.com', '06777']
+                ]
+            },
+
+            auth: auth,
+        };
+         const newRes = (await sheets.spreadsheets.values.append(request)).data;
+        console.log(JSON.stringify(newRes, null, 2));
+    }
+
+
+    if(true){
+        authorize().then(listMajors).catch(console.error);
+    }else{
+        authorize().then(updateData).catch(console.error);
+    }
+    
 }
+
+
+app.get('/', (req, res) => {
+
+    database('get', 'val')
+
+    res.send('<h1>yesssss</h1>')
+})
+
 
 app.listen(port, () => {
     console.log('server started on ' + port)
