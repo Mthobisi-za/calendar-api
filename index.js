@@ -119,7 +119,7 @@ async function database(type, val, res) {
 
             resource: {
                 values: [
-                    [val.name, val.surname, val.email, val.company_name]
+                    [val.name, val.surname, val.email, val.company_name, val.e_name_surname, val.occupation]
                 ]
             },
 
@@ -147,13 +147,15 @@ app.get('/', (req, res) => {
     })()
     
 })
-app.get('/update/:name/:surname/:email/:company_name', (req,res)=>{
+app.get('/update/:name/:surname/:email/:company_name/:e_name_surname/:occupation', (req,res)=>{
         let name = req.params.name;
         let surname = req.params.surname;
         let email = req.params.email;
         let company_name = req.params.company_name;
+        let e_name_surname = req.params.e_name_surname;
+        let occupation = req.params.occupation;
 
-        database('update', {name, surname, email, company_name});
+        database('update', {name, surname, email, company_name, e_name_surname, occupation});
         res.json({status: 200, status_text: 'success'});
 });
 
