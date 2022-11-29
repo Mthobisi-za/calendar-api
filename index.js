@@ -8,9 +8,10 @@ require('dotenv').config();
 const creds = require('./credentials.json');
 const { authenticate } = require('@google-cloud/local-auth');
 const { google } = require('googleapis');
+const cors = require("cors");
 
 
-
+app.use(cors())
 
 async function database(type, val, res) {
     // If modifying these scopes, delete token.json.
