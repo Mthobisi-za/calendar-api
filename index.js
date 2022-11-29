@@ -154,9 +154,7 @@ app.get('/update/:name/:surname/:email/:company_name', (req,res)=>{
         let company_name = req.params.company_name;
 
         database('update', {name, surname, email, company_name});
-       
-
-        res.send(`<div><p>${name} ${surname} ${email} ${company_name}</p></div>`)
+        res.json({status: 200, status_text: 'success'});
 });
 
 app.listen(port, () => {
