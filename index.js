@@ -12,7 +12,7 @@ const { google } = require('googleapis');
 
 
 
-function database(type, val) {
+async function database(type, val, res) {
     // If modifying these scopes, delete token.json.
     const SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly', 'https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/drive.file', 'https://www.googleapis.com/auth/spreadsheets'];
     // The file token.json stores the user's access and refresh tokens, and is
@@ -90,35 +90,13 @@ function database(type, val) {
             console.log('No data found.');
             return;
         }
+        
         rows.forEach((row) => {
             // Print columns A and E, which correspond to indices 0 and 4.
             console.log(row);
         });
-        const request = {
-            // The ID of the spreadsheet to update.
-            spreadsheetId: '1Pr94ZBWUNYGfe5Wr0k1j_EXcUCAdSE7iJkff7vJEORA', // TODO: Update placeholder value.
-
-            // The A1 notation of a range to search for a logical table of data.
-            // Values are appended after the last row of the table.
-            range: 'testing', // TODO: Update placeholder value.
-
-            // How the input data should be interpreted.
-            valueInputOption: 'RAW', // TODO: Update placeholder value.
-
-            // How the input data should be inserted.
-            insertDataOption: 'INSERT_ROWS', // TODO: Update placeholder value.
-
-            resource: {
-                values: [
-                    ['Mthobisi', 'Ngubane', 'mtho@gmail.com', 06777],
-                    ['Mthobisi', 'Ngubane', 'mtho@gmail.com', 06777]
-                ]
-            },
-
-            auth: auth,
-        };
-        // const newRes = (await sheets.spreadsheets.values.append(request)).data;
-        //console.log(JSON.stringify(newRes, null, 2));
+        
+        return rows;
     }
 
     //setnew data
@@ -153,17 +131,21 @@ function database(type, val) {
 
 
     if(type === 'get'){
-        authorize().then(listMajors).catch(console.error);
+        return await authorize().then(listMajors).catch(console.error);
     }else if(type === 'update'){
         authorize().then(updateData).catch(console.error);
     }
+   
     
 }
 
 
 app.get('/', (req, res) => {
-    database('get', 'val')
-    res.send('<h1>yesssss</h1>')
+    (async ()=>{
+        let data =await database('get', 'val', res);
+        res.json({status: 200, status_text: 'success', data: await data});
+    })()
+    
 })
 app.get('/update/:name/:surname/:email/:company_name', (req,res)=>{
         let name = req.params.name;
@@ -171,8 +153,8 @@ app.get('/update/:name/:surname/:email/:company_name', (req,res)=>{
         let email = req.params.email;
         let company_name = req.params.company_name;
 
-        
-        
+        database('update', {name, surname, email, company_name});
+       
 
         res.send(`<div><p>${name} ${surname} ${email} ${company_name}</p></div>`)
 });
