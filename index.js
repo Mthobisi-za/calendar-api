@@ -5,7 +5,7 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 5000;
 require('dotenv').config();
-const creds = require('/credentials.json');
+const creds = require('./credentials.json');
 const { authenticate } = require('@google-cloud/local-auth');
 const { google } = require('googleapis');
 
