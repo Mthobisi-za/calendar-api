@@ -9,7 +9,8 @@ const creds = require('./credentials.json');
 const { authenticate } = require('@google-cloud/local-auth');
 const { google } = require('googleapis');
 const cors = require("cors");
-
+const moment = require('moment')
+require('./txt');
 
 app.use(cors())
 
@@ -91,12 +92,12 @@ async function database(type, val, res) {
             console.log('No data found.');
             return;
         }
-        
+
         rows.forEach((row) => {
             // Print columns A and E, which correspond to indices 0 and 4.
             console.log(row);
         });
-        
+
         return rows;
     }
 
@@ -126,38 +127,69 @@ async function database(type, val, res) {
 
             auth: auth,
         };
-         const newRes = (await sheets.spreadsheets.values.append(request)).data;
+        const newRes = (await sheets.spreadsheets.values.append(request)).data;
         console.log(JSON.stringify(newRes, null, 2));
     }
 
 
-    if(type === 'get'){
+    if (type === 'get') {
         return await authorize().then(listMajors).catch(console.error);
-    }else if(type === 'update'){
+    } else if (type === 'update') {
         authorize().then(updateData).catch(console.error);
     }
-   
-    
+
+
 }
 
 
 app.get('/', (req, res) => {
-    (async ()=>{
-        let data =await database('get', 'val', res);
-        res.json({status: 200, status_text: 'success', data: await data});
-    })()
-    
-})
-app.get('/update/:name/:surname/:email/:company_name/:e_name_surname/:occupation', (req,res)=>{
-        let name = req.params.name;
-        let surname = req.params.surname;
-        let email = req.params.email;
-        let company_name = req.params.company_name;
-        let e_name_surname = req.params.e_name_surname;
-        let occupation = req.params.occupation;
+    (async() => {
+        let data = await database('get', 'val', res);
+        var arg = [];
+        await data.forEach(ele => {
+            if (ele[0] == 'FirstName') {
 
-        database('update', {name, surname, email, company_name, e_name_surname, occupation});
-        res.json({status: 200, status_text: 'success'});
+            } else {
+
+
+                var fromD = ((((ele[6].split('-')[0]).replace('/', '-')).replace('/', '-')).replace('/', '-'));
+                var toD = ((((ele[6].split('-')[1]).replace('/', '-')).replace('/', '-')).replace('/', '-'));
+                console.log(fromD, toD)
+                var itr = moment.twix(new Date(fromD), new Date(toD)).iterate("days");
+                var range = [];
+                while (itr.hasNext()) {
+                    range.push(itr.next().format("YYYY-M-D"))
+                }
+                console.log(range)
+                var obj = {
+                    FirstName: ele[0],
+                    LastName: ele[1],
+                    Email: ele[2],
+                    Company_name: ele[3],
+                    e_name_surname: ele[4],
+                    occupation: ele[5],
+                    date_booked: range
+                }
+                arg.push(obj);
+            }
+
+
+        });
+        res.json({ status: 200, status_text: 'success', data: await arg });
+    })()
+
+});
+app.get('/update/:name/:surname/:email/:company_name/:e_name_surname/:occupation/:datebooked', (req, res) => {
+    let name = req.params.name;
+    let surname = req.params.surname;
+    let email = req.params.email;
+    let company_name = req.params.company_name;
+    let e_name_surname = req.params.e_name_surname;
+    let occupation = req.params.occupation;
+    let date_booked = req.params.datebooked;
+
+    database('update', { name, surname, email, company_name, e_name_surname, occupation });
+    res.json({ status: 200, status_text: 'success' });
 });
 
 app.listen(port, () => {
