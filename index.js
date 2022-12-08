@@ -202,7 +202,7 @@ app.get('/newupdate/:name/:surname/:email/:company_name/:e_name_surname/:occupat
     console.log(name, surname, email, company_name, e_name_surname, occupation, );
     database('update', { name, surname, email, company_name, e_name_surname, occupation, date_booked });
 
-    res.send(`<h1>yeah ${name}</h1>`);
+    res.json({ status: 200, status_text: 'success' });
 })
 app.listen(port, () => {
     console.log('server started on ' + port);
