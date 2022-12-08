@@ -179,19 +179,31 @@ app.get('/', (req, res) => {
     })()
 
 });
-app.get('/update/:name/:surname/:email/:company_name/:e_name_surname/:occupation/:datebooked', (req, res) => {
+app.get('/update/:name/:surname/:email/:company_name/:e_name_surname/:occupation/:date_booked', (req, res) => {
     let name = req.params.name;
     let surname = req.params.surname;
     let email = req.params.email;
     let company_name = req.params.company_name;
     let e_name_surname = req.params.e_name_surname;
     let occupation = req.params.occupation;
-    let date_booked = req.params.datebooked;
-
+    let date_booked = req.params.date_booked;
+    console.log(name, surname, email, company_name, e_name_surname, occupation, database)
     database('update', { name, surname, email, company_name, e_name_surname, occupation });
     res.json({ status: 200, status_text: 'success' });
 });
+app.get('/newupdate/:name/:surname/:email/:company_name/:e_name_surname/:occupation/:date_booked', (req, res) => {
+    let name = req.params.name;
+    let surname = req.params.surname;
+    let email = req.params.email;
+    let company_name = req.params.company_name;
+    let e_name_surname = req.params.e_name_surname;
+    let occupation = req.params.occupation;
+    let date_booked = req.params.date_booked;
+    console.log(name, surname, email, company_name, e_name_surname, occupation, );
+    database('update', { name, surname, email, company_name, e_name_surname, occupation, date_booked });
 
+    res.send(`<h1>yeah ${name}</h1>`);
+})
 app.listen(port, () => {
-    console.log('server started on ' + port)
+    console.log('server started on ' + port);
 })
