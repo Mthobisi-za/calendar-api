@@ -12,7 +12,7 @@ const cors = require("cors");
 const moment = require('moment')
 require('./txt');
 
-app.use(cors())
+app.use(cors({ origin: '*' }))
 
 async function database(type, val, res) {
     // If modifying these scopes, delete token.json.
