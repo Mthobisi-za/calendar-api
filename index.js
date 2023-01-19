@@ -121,7 +121,7 @@ async function database(type, val, res) {
 
             resource: {
                 values: [
-                    [val.name, val.surname, val.email, val.company_name, val.e_name_surname, val.occupation]
+                    [val.name, val.surname, val.email, val.company_name, val.e_name_surname, val.occupation, val.date_booked]
                 ]
             },
 
@@ -187,8 +187,14 @@ app.get('/update/:name/:surname/:email/:company_name/:e_name_surname/:occupation
     let e_name_surname = req.params.e_name_surname;
     let occupation = req.params.occupation;
     let date_booked = req.params.date_booked;
+
+    var fromd = (date_booked).replace('-', '/').replace('-', '/').replace('-', '/').replace('-', '/').replace('-', '/');
+    var full = fromd.replace('=', '-');
+    console.log('full date >' + full);
+
+
     console.log(name, surname, email, company_name, e_name_surname, occupation, database)
-    database('update', { name, surname, email, company_name, e_name_surname, occupation });
+    database('update', { name, surname, email, company_name, e_name_surname, occupation, date_booked: full });
     res.json({ status: 200, status_text: 'success' });
 });
 app.get('/newupdate/:name/:surname/:email/:company_name/:e_name_surname/:occupation/:date_booked', (req, res) => {
@@ -199,11 +205,18 @@ app.get('/newupdate/:name/:surname/:email/:company_name/:e_name_surname/:occupat
     let e_name_surname = req.params.e_name_surname;
     let occupation = req.params.occupation;
     let date_booked = req.params.date_booked;
+
+    var fromd = (date_booked).replace('-', '/').replace('-', '/').replace('-', '/').replace('-', '/').replace('-', '/');
+    var full = fromd.replace('=', '-');
+    console.log('full date >' + full);
+
+
+
     console.log(name, surname, email, company_name, e_name_surname, occupation, );
-    database('update', { name, surname, email, company_name, e_name_surname, occupation, date_booked });
+    database('update', { name, surname, email, company_name, e_name_surname, occupation, date_booked: full });
 
     res.json({ status: 200, status_text: 'success' });
-})
+});
 app.listen(port, () => {
     console.log('server started on ' + port);
 })
