@@ -154,7 +154,7 @@ app.get('/', (req, res) => {
 
                 var fromD = ((((ele[6].split('-')[0]).replace('/', '-')).replace('/', '-')).replace('/', '-'));
                 var toD = ((((ele[6].split('-')[1]).replace('/', '-')).replace('/', '-')).replace('/', '-'));
-                console.log(fromD, toD)
+                console.log(fromD, toD);
                 var itr = moment.twix(new Date(fromD), new Date(toD)).iterate("days");
                 var range = [];
                 while (itr.hasNext()) {
