@@ -121,7 +121,7 @@ async function database(type, val, res) {
 
             resource: {
                 values: [
-                    [val.name, val.surname, val.email, val.company_name, val.e_name_surname, val.occupation, val.date_booked]
+                    [val.name, val.surname, val.email, val.company_name, val.e_name_surname, val.occupation, val.date_booked, val.e_cell]
                 ]
             },
 
@@ -197,7 +197,7 @@ app.get('/update/:name/:surname/:email/:company_name/:e_name_surname/:occupation
     database('update', { name, surname, email, company_name, e_name_surname, occupation, date_booked: full });
     res.json({ status: 200, status_text: 'success' });
 });
-app.get('/newupdate/:name/:surname/:email/:company_name/:e_name_surname/:occupation/:date_booked', (req, res) => {
+app.get('/newupdate/:name/:surname/:email/:company_name/:e_name_surname/:occupation/:date_booked/:e_cell', (req, res) => {
     let name = req.params.name;
     let surname = req.params.surname;
     let email = req.params.email;
@@ -205,6 +205,7 @@ app.get('/newupdate/:name/:surname/:email/:company_name/:e_name_surname/:occupat
     let e_name_surname = req.params.e_name_surname;
     let occupation = req.params.occupation;
     let date_booked = req.params.date_booked;
+    let e_cell = req.params.e_cell;
 
     var fromd = (date_booked).replace('-', '/').replace('-', '/').replace('-', '/').replace('-', '/').replace('-', '/');
     var full = fromd.replace('=', '-');
@@ -213,7 +214,7 @@ app.get('/newupdate/:name/:surname/:email/:company_name/:e_name_surname/:occupat
 
 
     console.log(name, surname, email, company_name, e_name_surname, occupation, );
-    database('update', { name, surname, email, company_name, e_name_surname, occupation, date_booked: full });
+    database('update', { name, surname, email, company_name, e_name_surname, occupation, date_booked: full, e_cell });
 
     res.json({ status: 200, status_text: 'success' });
 });
