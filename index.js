@@ -144,38 +144,43 @@ async function database(type, val, res) {
 
 app.get('/', (req, res) => {
     (async() => {
-        let data = await database('get', 'val', res);
-        var arg = [];
-        await data.forEach(ele => {
-            if (ele[0] == 'FirstName') {
+        try {
+            let data = await database('get', 'val', res);
+            var arg = [];
+            await data.forEach(ele => {
+                if (ele[0] == 'FirstName') {
 
-            } else {
+                } else {
 
 
-                var fromD = ((((ele[6].split('-')[0]).replace('/', '-')).replace('/', '-')).replace('/', '-'));
-                var toD = ((((ele[6].split('-')[1]).replace('/', '-')).replace('/', '-')).replace('/', '-'));
-                console.log(fromD, toD);
-                var itr = moment.twix(new Date(fromD), new Date(toD)).iterate("days");
-                var range = [];
-                while (itr.hasNext()) {
-                    range.push(itr.next().format("YYYY-M-D"))
+                    var fromD = ((((ele[6].split('-')[0]).replace('/', '-')).replace('/', '-')).replace('/', '-'));
+                    var toD = ((((ele[6].split('-')[1]).replace('/', '-')).replace('/', '-')).replace('/', '-'));
+                    console.log(fromD, toD);
+                    var itr = moment.twix(new Date(fromD), new Date(toD)).iterate("days");
+                    var range = [];
+                    while (itr.hasNext()) {
+                        range.push(itr.next().format("YYYY-M-D"))
+                    }
+                    console.log(range)
+                    var obj = {
+                        FirstName: ele[0],
+                        LastName: ele[1],
+                        Email: ele[2],
+                        Company_name: ele[3],
+                        e_name_surname: ele[4],
+                        occupation: ele[5],
+                        date_booked: range
+                    }
+                    arg.push(obj);
                 }
-                console.log(range)
-                var obj = {
-                    FirstName: ele[0],
-                    LastName: ele[1],
-                    Email: ele[2],
-                    Company_name: ele[3],
-                    e_name_surname: ele[4],
-                    occupation: ele[5],
-                    date_booked: range
-                }
-                arg.push(obj);
-            }
 
 
-        });
-        res.json({ status: 200, status_text: 'success', data: await arg });
+            });
+            res.json({ status: 200, status_text: 'success', data: await arg });
+        } catch (error) {
+            res.json({ status: 201, status_text: 'success', data: await arg });
+        }
+
     })()
 
 });
