@@ -178,7 +178,7 @@ app.get('/', (req, res) => {
             });
             res.json({ status: 200, status_text: 'success', data: await arg });
         } catch (error) {
-            res.json({ status: 201, status_text: 'success', data: await arg });
+            res.json({ status: 201, status_text: 'success' });
         }
 
     })()
