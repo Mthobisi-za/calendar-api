@@ -3,17 +3,19 @@ const path = require('path');
 const process = require('process');
 const express = require('express');
 const app = express();
+const serverless = require("serverless-http");
+
 const port = process.env.PORT || 5000;
 require('dotenv').config();
-const creds = require('./credentials.json');
+const creds = require('../credentials.json');
 const { authenticate } = require('@google-cloud/local-auth');
 const { google } = require('googleapis');
 const cors = require("cors");
-const moment = require('moment')
-require('./txt');
+const moment = require('moment');
+require('../txt');
 
 app.use(cors({ origin: '*' }))
-
+const router = express.Router();
 async function database(type, val, res) {
     // If modifying these scopes, delete token.json.
     const SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly', 'https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/drive.file', 'https://www.googleapis.com/auth/spreadsheets'];
@@ -142,7 +144,7 @@ async function database(type, val, res) {
 }
 
 
-app.get('/', (req, res) => {
+router.get('/', (req, res) => {
     (async() => {
         try {
             let data = await database('get', 'val', res);
@@ -184,7 +186,7 @@ app.get('/', (req, res) => {
     })()
 
 });
-app.get('/update/:name/:surname/:email/:company_name/:e_name_surname/:occupation/:date_booked', (req, res) => {
+router.get('/update/:name/:surname/:email/:company_name/:e_name_surname/:occupation/:date_booked', (req, res) => {
     let name = req.params.name;
     let surname = req.params.surname;
     let email = req.params.email;
@@ -202,7 +204,7 @@ app.get('/update/:name/:surname/:email/:company_name/:e_name_surname/:occupation
     database('update', { name, surname, email, company_name, e_name_surname, occupation, date_booked: full });
     res.json({ status: 200, status_text: 'success' });
 });
-app.get('/newupdate/:name/:surname/:email/:company_name/:e_name_surname/:occupation/:date_booked/:e_cell', (req, res) => {
+router.get('/newupdate/:name/:surname/:email/:company_name/:e_name_surname/:occupation/:date_booked/:e_cell', (req, res) => {
     let name = req.params.name;
     let surname = req.params.surname;
     let email = req.params.email;
@@ -223,6 +225,6 @@ app.get('/newupdate/:name/:surname/:email/:company_name/:e_name_surname/:occupat
 
     res.json({ status: 200, status_text: 'success' });
 });
-app.listen(port, () => {
-    console.log('server started on ' + port);
-})
+app.use(`/.netlify/functions/index`, router);
+module.exports = app;
+module.exports.handler = serverless(app);
