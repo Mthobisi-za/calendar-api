@@ -52011,9 +52011,6 @@ router.get('/', (req, res) => {
       resp.forEach(doc => {
         list.push(doc.data());
       });
-      return list;
-      // res.setHeader('Content-Type', 'application/json');
-    }).then(list => {
       res.json({
         list
       });
