@@ -32,7 +32,8 @@ router.get('/', (req, res) => {
             resp.forEach(doc => {
                 list.push(doc.data());
             });
-            res.send({ list });
+            // res.setHeader('Content-Type', 'application/json');
+            res.json({ list });
         })
 
 
