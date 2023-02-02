@@ -1,25 +1,29 @@
 {
-  "name": "calendar-api",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@google-cloud/local-auth": "^2.1.0",
-    "cors": "^2.8.5",
-    "dotenv": "^16.0.3",
-    "express": "^4.18.2",
-    "google-spreadsheet": "^3.3.0",
-    "googleapis": "^105.0.0",
-    "moment": "^2.29.4"
-  },
-  "engines": {
-    "node": "16.x"
-  }
+    "name": "calendar-api",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "NODE_ENV=development ./node_modules/.bin/netlify-lambda serve src",
+        "build": "NODE_ENV=production ./node_modules/.bin/netlify-lambda build src"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@google-cloud/local-auth": "^2.1.0",
+        "cors": "^2.8.5",
+        "dotenv": "^16.0.3",
+        "express": "^4.18.2",
+        "express-handlebars": "^6.0.7",
+        "firebase": "^9.16.0",
+        "google-spreadsheet": "^3.3.0",
+        "googleapis": "^105.0.0",
+        "moment": "^2.29.4",
+        "netlify-lambda": "^2.0.15",
+        "serverless-http": "^3.1.1"
+    },
+    "engines": {
+        "node": "16.x"
+    }
 }
