@@ -12,7 +12,7 @@ const { authenticate } = require('@google-cloud/local-auth');
 const { google } = require('googleapis');
 const cors = require("cors");
 const moment = require('moment');
-
+require('../txt');
 
 app.use(cors({ origin: '*' }))
 const router = express.Router();
