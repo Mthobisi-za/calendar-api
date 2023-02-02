@@ -2,8 +2,7 @@ const express = require('express');
 const res = require('express/lib/response');
 var bodyParser = require('body-parser');
 const app = express();
-const fetch = require('node-fetch');
-global.Headers = fetch.Headers;
+
 // firebase
 const { initializeApp } = require("firebase/app");
 const { getAnalytics } = require("firebase/analytics");
