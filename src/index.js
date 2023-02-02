@@ -2,7 +2,8 @@ const express = require('express');
 const res = require('express/lib/response');
 var bodyParser = require('body-parser');
 const app = express();
-
+const fetch = require('node-fetch');
+global.Headers = fetch.Headers;
 // firebase
 const { initializeApp } = require("firebase/app");
 const { getAnalytics } = require("firebase/analytics");
@@ -32,7 +33,10 @@ router.get('/', (req, res) => {
             resp.forEach(doc => {
                 list.push(doc.data());
             });
-            // res.setHeader('Content-Type', 'application/json');
+            return list
+                // res.setHeader('Content-Type', 'application/json');
+
+        }).then(list => {
             res.json({ list });
         })
 
