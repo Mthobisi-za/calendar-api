@@ -4,7 +4,6 @@ const process = require('process');
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 5000;
-require('dotenv').config();
 const creds = require('./credentials.json');
 const { authenticate } = require('@google-cloud/local-auth');
 const { google } = require('googleapis');
@@ -12,7 +11,7 @@ const cors = require("cors");
 const moment = require('moment')
 require('./txt');
 
-app.use(cors({ origin: '*' }))
+app.use(cors({ origin: "*" }));
 
 async function database(type, val, res) {
     // If modifying these scopes, delete token.json.
